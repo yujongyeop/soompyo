@@ -42,7 +42,7 @@ jobs:
       run: ./gradlew build
 
     - name: Regist Test result to PR
-      uses: EnricoMi/publish-unit-test-result-action@v1
+      uses: mikepenz/action-junit-report@v3
       if: always()
       with:
-        files: './server/**/build/test-results/test/TEST-*.xml'
+        report_paths: 'build/test-results/test/TEST-*.xml'
