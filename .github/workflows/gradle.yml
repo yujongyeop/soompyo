@@ -40,7 +40,7 @@ jobs:
       
     - name: Build with Gradle Wrapper
       working-directory: ./server
-      run: ./gradlew build
+      run: ./gradlew build --scan
 
     - name: Regist Test result to PR
       uses: mikepenz/action-junit-report@v3
