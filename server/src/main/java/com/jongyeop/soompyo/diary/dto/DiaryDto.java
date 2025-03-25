@@ -1,38 +1,19 @@
-package com.jongyeop.soompyo.diary.model;
+package com.jongyeop.soompyo.diary.dto;
 
 import java.time.LocalDate;
 
 import com.jongyeop.soompyo.user.model.TempUser;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-
-@Entity
-public class Diary {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "diary_id")
+public class DiaryDto {
 	private Long id;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id")
 	private TempUser owner;
-
 	private String title;
 	private String content;
 	private LocalDate createdDate;
 	private LocalDate modifiedDate;
 
-	protected Diary() {
-	}
-
-	public Diary(Long id, TempUser owner, String title, String content, LocalDate createdDate, LocalDate modifiedDate) {
+	public DiaryDto(Long id, TempUser owner, String title, String content, LocalDate createdDate,
+		LocalDate modifiedDate) {
 		this.id = id;
 		this.owner = owner;
 		this.title = title;
