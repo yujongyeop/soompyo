@@ -1,6 +1,7 @@
 package com.jongyeop.soompyo.diary.service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import com.jongyeop.soompyo.diary.dto.DiaryDto;
 import com.jongyeop.soompyo.diary.model.Diary;
 import com.jongyeop.soompyo.diary.repository.DiaryRepository;
 import com.jongyeop.soompyo.user.model.TempUser;
@@ -24,32 +26,33 @@ public class DiaryServiceTest {
 	private DiaryRepository diaryRepository;
 
 	@BeforeEach
-	public void beforeEach(){
+	public void beforeEach() {
 		tempUserService
 			= new TempUserServiceImpl(tempUserRepository);
-		diaryService = new DiaryServiceImpl(diaryRepository);
+		diaryService = new DiaryServiceImpl(diaryRepository, tempUserRepository);
 	}
 
 	@Test
-	public void CreateDiaryTest(){
-	    //given
-		TempUser tempUser = new TempUser("Test", "TestName");
-	    tempUserService.join(tempUser);
+	public void CreateDiaryTest() {
+		//given
+		TempUser tempUser = new TempUser("Test", "testName");
+		tempUserRepository.saveAndFlush(tempUser); // 테스트를 위해 저장 후 플러시 작업을 수행
 
 		String title = "Diary Test";
 		String content = "This is diary Test";
-		LocalDateTime createdDate = LocalDateTime.now();
-		Diary diary = new Diary(tempUser, title, content, createdDate, null);
+
+		Optional<TempUser> findUser = tempUserService.findByUsername("testName");
 
 		//when
+		if(!findUser.isPresent()) {
+			throw new RuntimeException("사용자를 찾을 수 없습니다.");
+		}
+		DiaryDto diary = new DiaryDto(null, findUser.get().getId(), title, content, null, null);
 		Diary savedDiary = diaryService.save(diary);
 
 		//then
-		Assertions.assertThat(savedDiary.getId()).isEqualTo(diary.getId());
 		Assertions.assertThat(savedDiary.getTitle()).isEqualTo(title);
 		Assertions.assertThat(savedDiary.getContent()).isEqualTo(content);
-		Assertions.assertThat(savedDiary.getCreatedDate()).isEqualTo(createdDate);
-
 	}
 
 }
