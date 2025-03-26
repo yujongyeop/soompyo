@@ -1,19 +1,19 @@
 package com.jongyeop.soompyo.diary.dto;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.jongyeop.soompyo.user.model.TempUser;
 
 public class DiaryDto {
-	private Long id;
-	private TempUser owner;
-	private String title;
-	private String content;
-	private LocalDate createdDate;
-	private LocalDate modifiedDate;
+	private final Long id;
+	private final TempUser owner;
+	private final String title;
+	private final String content;
+	private final LocalDateTime createdDate;
+	private final LocalDateTime modifiedDate;
 
-	public DiaryDto(Long id, TempUser owner, String title, String content, LocalDate createdDate,
-		LocalDate modifiedDate) {
+	public DiaryDto(Long id, TempUser owner, String title, String content, LocalDateTime createdDate,
+		LocalDateTime modifiedDate) {
 		this.id = id;
 		this.owner = owner;
 		this.title = title;
@@ -38,11 +38,11 @@ public class DiaryDto {
 		return content;
 	}
 
-	public LocalDate getCreatedDate() {
+	public LocalDateTime getCreatedDate() {
 		return createdDate;
 	}
 
-	public LocalDate getModifiedDate() {
+	public LocalDateTime getModifiedDate() {
 		return modifiedDate;
 	}
 }

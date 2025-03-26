@@ -1,6 +1,6 @@
 package com.jongyeop.soompyo.diary.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.jongyeop.soompyo.user.model.TempUser;
 
@@ -26,14 +26,13 @@ public class Diary {
 
 	private String title;
 	private String content;
-	private LocalDate createdDate;
-	private LocalDate modifiedDate;
+	private LocalDateTime createdDate;
+	private LocalDateTime modifiedDate;
 
 	protected Diary() {
 	}
 
-	public Diary(Long id, TempUser owner, String title, String content, LocalDate createdDate, LocalDate modifiedDate) {
-		this.id = id;
+	public Diary(TempUser owner, String title, String content, LocalDateTime createdDate, LocalDateTime modifiedDate) {
 		this.owner = owner;
 		this.title = title;
 		this.content = content;
@@ -57,11 +56,11 @@ public class Diary {
 		return content;
 	}
 
-	public LocalDate getCreatedDate() {
+	public LocalDateTime getCreatedDate() {
 		return createdDate;
 	}
 
-	public LocalDate getModifiedDate() {
+	public LocalDateTime getModifiedDate() {
 		return modifiedDate;
 	}
 }
