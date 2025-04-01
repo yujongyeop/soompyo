@@ -1,5 +1,6 @@
 package com.jongyeop.soompyo.diary.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import com.jongyeop.soompyo.user.model.TempUser;
@@ -12,8 +13,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Diary {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,41 +33,8 @@ public class Diary {
 
 	private String title;
 	private String content;
+	private LocalDate targetDate;
 	private LocalDateTime createdDate;
 	private LocalDateTime modifiedDate;
 
-	protected Diary() {
-	}
-
-	public Diary(TempUser owner, String title, String content, LocalDateTime createdDate, LocalDateTime modifiedDate) {
-		this.owner = owner;
-		this.title = title;
-		this.content = content;
-		this.createdDate = createdDate;
-		this.modifiedDate = modifiedDate;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public TempUser getOwner() {
-		return owner;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public String getContent() {
-		return content;
-	}
-
-	public LocalDateTime getCreatedDate() {
-		return createdDate;
-	}
-
-	public LocalDateTime getModifiedDate() {
-		return modifiedDate;
-	}
 }
