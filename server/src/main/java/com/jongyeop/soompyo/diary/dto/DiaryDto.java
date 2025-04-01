@@ -1,46 +1,39 @@
 package com.jongyeop.soompyo.diary.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import com.jongyeop.soompyo.diary.model.Diary;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Builder
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class DiaryDto {
-	private final Long id;
-	private final Long owner;
-	private final String title;
-	private final String content;
-	private final LocalDateTime createdDate;
-	private final LocalDateTime modifiedDate;
+	private Long id;
+	private Long owner;
+	private String title;
+	private String content;
+	private LocalDate targetDate;
+	private LocalDateTime createdDate;
+	private LocalDateTime modifiedDate;
 
-	public DiaryDto(Long id, Long owner, String title, String content, LocalDateTime createdDate,
-		LocalDateTime modifiedDate) {
-		this.id = id;
-		this.owner = owner;
-		this.title = title;
-		this.content = content;
-		this.createdDate = createdDate;
-		this.modifiedDate = modifiedDate;
+
+	public static DiaryDto toDto(Diary entity) {
+		return DiaryDto.builder()
+			.id(entity.getId())
+			.title(entity.getTitle())
+			.owner(entity.getOwner().getId())
+			.content(entity.getContent())
+			.targetDate(entity.getTargetDate())
+			.createdDate(entity.getCreatedDate())
+			.modifiedDate(entity.getModifiedDate())
+			.build();
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public Long getOwner() {
-		return owner;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public String getContent() {
-		return content;
-	}
-
-	public LocalDateTime getCreatedDate() {
-		return createdDate;
-	}
-
-	public LocalDateTime getModifiedDate() {
-		return modifiedDate;
-	}
 }

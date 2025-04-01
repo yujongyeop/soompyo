@@ -1,6 +1,6 @@
 package com.jongyeop.soompyo.diary.service;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
@@ -29,7 +29,7 @@ public class DiaryServiceTest {
 	public void beforeEach() {
 		tempUserService
 			= new TempUserServiceImpl(tempUserRepository);
-		diaryService = new DiaryServiceImpl(diaryRepository, tempUserRepository);
+		diaryService = new DiaryServiceImpl(diaryRepository);
 	}
 
 	@Test
@@ -47,8 +47,9 @@ public class DiaryServiceTest {
 		if(!findUser.isPresent()) {
 			throw new RuntimeException("사용자를 찾을 수 없습니다.");
 		}
-		DiaryDto diary = new DiaryDto(null, findUser.get().getId(), title, content, null, null);
-		Diary savedDiary = diaryService.save(diary);
+		DiaryDto diaryDto = DiaryDto.builder().owner(findUser.get().getId()).title(title).content(content).targetDate(
+			LocalDate.of(2025, 3, 30)).build();
+		Diary savedDiary = diaryService.save(Diary.toEntity(diaryDto));
 
 		//then
 		Assertions.assertThat(savedDiary.getTitle()).isEqualTo(title);
