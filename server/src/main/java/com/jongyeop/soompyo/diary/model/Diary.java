@@ -14,15 +14,18 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "diary")
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 public class Diary {
 	@Id
@@ -34,10 +37,15 @@ public class Diary {
 	@JoinColumn(name = "id")
 	private TempUser owner;
 
+	@Column(name = "title")
 	private String title;
+	@Column(name = "content")
 	private String content;
+	@Column(name = "target_date")
 	private LocalDate targetDate;
+	@Column(name = "create_date")
 	private LocalDateTime createdDate;
+	@Column(name = "modified_data")
 	private LocalDateTime modifiedDate;
 
 	public static Diary toEntity(DiaryDto dto) {
