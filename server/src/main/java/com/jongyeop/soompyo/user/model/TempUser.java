@@ -11,8 +11,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import lombok.Getter;
 
 @Entity
+@Getter
 public class TempUser {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -29,17 +31,5 @@ public class TempUser {
 	public TempUser(String userId, String username) {
 		this.userId = userId;
 		this.username = username;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public String getUserId() {
-		return userId;
 	}
 }
