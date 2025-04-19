@@ -14,9 +14,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DiaryDto {
+public class DiaryResponseDto {
 	private Long id;
-	private Long owner;
+	private String owner;
 	private String title;
 	private String content;
 	private LocalDate targetDate;
@@ -24,11 +24,11 @@ public class DiaryDto {
 	private LocalDateTime modifiedDate;
 
 
-	public static DiaryDto toDto(Diary entity) {
-		return DiaryDto.builder()
+	public static DiaryResponseDto toDto(Diary entity) {
+		return DiaryResponseDto.builder()
 			.id(entity.getId())
 			.title(entity.getTitle())
-			.owner(entity.getOwner().getId())
+			.owner(entity.getOwner().getUserId())
 			.content(entity.getContent())
 			.targetDate(entity.getTargetDate())
 			.createdDate(entity.getCreatedDate())
