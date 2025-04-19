@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import com.jongyeop.soompyo.diary.dto.DiaryDto;
-import com.jongyeop.soompyo.diary.model.Diary;
+import com.jongyeop.soompyo.diary.dto.AddDiaryRequestDto;
+import com.jongyeop.soompyo.diary.dto.DiaryResponseDto;
 import com.jongyeop.soompyo.diary.repository.DiaryRepository;
 import com.jongyeop.soompyo.user.model.TempUser;
 import com.jongyeop.soompyo.user.repository.TempUserRepository;
@@ -29,7 +29,7 @@ public class DiaryServiceTest {
 	public void beforeEach() {
 		tempUserService
 			= new TempUserServiceImpl(tempUserRepository);
-		diaryService = new DiaryServiceImpl(diaryRepository);
+		diaryService = new DiaryServiceImpl(diaryRepository, tempUserRepository);
 	}
 
 	@Test
@@ -47,9 +47,9 @@ public class DiaryServiceTest {
 		if(!findUser.isPresent()) {
 			throw new RuntimeException("사용자를 찾을 수 없습니다.");
 		}
-		DiaryDto diaryDto = DiaryDto.builder().owner(findUser.get().getId()).title(title).content(content).targetDate(
+		AddDiaryRequestDto diaryResponseDto = AddDiaryRequestDto.builder().userId(findUser.get().getUserId()).title(title).content(content).targetDate(
 			LocalDate.of(2025, 3, 30)).build();
-		Diary savedDiary = diaryService.save(Diary.toEntity(diaryDto));
+		DiaryResponseDto savedDiary = diaryService.save(diaryResponseDto);
 
 		//then
 		Assertions.assertThat(savedDiary.getTitle()).isEqualTo(title);
