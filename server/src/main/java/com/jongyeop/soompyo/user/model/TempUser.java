@@ -3,6 +3,7 @@ package com.jongyeop.soompyo.user.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.jongyeop.soompyo.diary.model.Diary;
 
 import jakarta.persistence.Column;
@@ -24,12 +25,13 @@ public class TempUser {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
-	@Column(name = "username")
+	@Column(name = "username", unique = true)
 	private String username;
-	@Column(name = "user_id")
+	@Column(name = "user_id", unique = true)
 	private String userId;
 
 	@OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
+	@JsonBackReference
 	private List<Diary> diaries = new ArrayList<>();
 
 	public TempUser(String userId, String username) {
