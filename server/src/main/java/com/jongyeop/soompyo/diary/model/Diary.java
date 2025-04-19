@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
+@Builder(toBuilder = true)
 public class Diary {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,5 +46,7 @@ public class Diary {
 	private LocalDateTime createdDate;
 	@Column(name = "modified_date")
 	private LocalDateTime modifiedDate;
+	@Column(name = "is_deleted")
+	private Boolean isDeleted;
 
 }
