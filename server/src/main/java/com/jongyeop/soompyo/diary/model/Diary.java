@@ -3,7 +3,6 @@ package com.jongyeop.soompyo.diary.model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import com.jongyeop.soompyo.diary.dto.DiaryDto;
 import com.jongyeop.soompyo.user.model.TempUser;
 
 import jakarta.persistence.Column;
@@ -43,32 +42,9 @@ public class Diary {
 	private String content;
 	@Column(name = "target_date")
 	private LocalDate targetDate;
-	@Column(name = "create_date")
+	@Column(name = "created_date")
 	private LocalDateTime createdDate;
-	@Column(name = "modified_data")
+	@Column(name = "modified_date")
 	private LocalDateTime modifiedDate;
-
-	public static Diary toEntity(DiaryDto dto) {
-		return Diary.builder()
-			.id(dto.getId())
-			.title(dto.getTitle())
-			.content(dto.getContent())
-			.targetDate(dto.getTargetDate())
-			.createdDate(dto.getCreatedDate())
-			.modifiedDate(dto.getModifiedDate())
-			.build();
-	}
-
-	public static Diary toEntity(DiaryDto dto, TempUser owner) {
-		return Diary.builder()
-			.id(dto.getId())
-			.owner(owner)
-			.title(dto.getTitle())
-			.content(dto.getContent())
-			.targetDate(dto.getTargetDate())
-			.createdDate(dto.getCreatedDate())
-			.modifiedDate(dto.getModifiedDate())
-			.build();
-	}
 
 }
