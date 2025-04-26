@@ -19,11 +19,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @AllArgsConstructor
-@RequestMapping("/diarys")
+@RequestMapping("/api/v1/users/{userId}/diaries")
 public class DiaryController {
 	private final DiaryService diaryService;
 
-	@GetMapping("/{userId}")
+	@GetMapping
 	public List<DiaryResponseDto> getDiary(@PathVariable String userId) {
 		return diaryService.getDiariesByUserId(userId);
 	}
