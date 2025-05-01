@@ -2,6 +2,7 @@ package com.jongyeop.soompyo.diary.controller;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,5 +32,10 @@ public class DiaryController {
 	@PostMapping
 	public DiaryResponseDto saveDiary(@RequestBody AddDiaryRequestDto diaryDto) {
 		return diaryService.save(diaryDto);
+	}
+
+	@DeleteMapping("/{diaryId}")
+	public void deleteDiary(@PathVariable String userId, @PathVariable Long diaryId) {
+		diaryService.deleteDiaryById(userId, diaryId);
 	}
 }

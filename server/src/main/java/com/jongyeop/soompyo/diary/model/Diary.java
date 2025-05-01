@@ -49,4 +49,9 @@ public class Diary {
 	@Column(name = "is_deleted")
 	private Boolean isDeleted;
 
+	public void softDelete() {
+		this.isDeleted = true;
+		this.modifiedDate = LocalDateTime.now();
+	}
+
 }

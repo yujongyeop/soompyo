@@ -51,4 +51,13 @@ public class DiaryServiceImpl implements DiaryService {
 			throw new RuntimeException("사용자를 찾을 수 없습니다.");
 		}
 	}
+
+	@Override
+	@Transactional
+	public ResponseEntity<Void> deleteDiaryById(String userId, Long diaryId) {
+		Diary findDiary = diaryRepository.findByIdAndOwnerUserId(diaryId, userId)
+			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "일기를 찾을 수 없습니다."));
+		findDiary.softDelete();
+		return ResponseEntity.noContent().build();
+	}
 }
