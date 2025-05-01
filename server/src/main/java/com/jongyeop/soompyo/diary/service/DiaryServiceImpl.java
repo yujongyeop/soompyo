@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -50,5 +51,14 @@ public class DiaryServiceImpl implements DiaryService {
 		} else {
 			throw new RuntimeException("사용자를 찾을 수 없습니다.");
 		}
+	}
+
+	@Override
+	@Transactional
+	public ResponseEntity<Void> deleteDiaryById(String userId, Long diaryId) {
+		Diary findDiary = diaryRepository.findByIdAndOwnerUserId(diaryId, userId)
+			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "일기를 찾을 수 없습니다."));
+		findDiary.softDelete();
+		return ResponseEntity.noContent().build();
 	}
 }
