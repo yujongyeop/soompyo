@@ -27,10 +27,10 @@ public class DiaryServiceImpl implements DiaryService {
 
 	@Override
 	public List<DiaryResponseDto> getDiariesByUserId(String userId) {
-		TempUser user = userRepository.findByUserId(userId)
+		List<Diary> diaries = diaryRepository.findByOwnerUserIdAndIsDeletedFalse(userId)
 			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 사용자를 찾을 수 없습니다."));
 
-		return user.getDiaries().stream()
+		return diaries.stream()
 			.map(DiaryResponseDto::toDto)
 			.toList();
 	}
