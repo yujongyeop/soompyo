@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import com.jongyeop.soompyo.diary.model.Diary;
 
+import jakarta.annotation.Nonnull;
+
 @Repository
 public interface DiaryRepository extends JpaRepository<Diary, Long> {
 	Diary save(@Nonnull Diary diary);
