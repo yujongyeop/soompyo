@@ -1,13 +1,15 @@
 package com.jongyeop.soompyo.diary.service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.jongyeop.soompyo.diary.dto.AddDiaryRequestDto;
 import com.jongyeop.soompyo.diary.dto.DiaryResponseDto;
@@ -16,7 +18,8 @@ import com.jongyeop.soompyo.user.model.TempUser;
 import com.jongyeop.soompyo.user.repository.TempUserRepository;
 import com.jongyeop.soompyo.user.serivce.TempUserServiceImpl;
 
-@DataJpaTest
+@SpringBootTest
+@Transactional
 public class DiaryServiceTest {
 	private DiaryService diaryService;
 	private TempUserServiceImpl tempUserService;
@@ -30,30 +33,66 @@ public class DiaryServiceTest {
 		tempUserService
 			= new TempUserServiceImpl(tempUserRepository);
 		diaryService = new DiaryServiceImpl(diaryRepository, tempUserRepository);
+		TempUser tempUser = new TempUser("Test", "testName");
+		tempUserRepository.saveAndFlush(tempUser); // 테스트를 위해 저장 후 플러시 작업을 수행
 	}
 
 	@Test
 	public void CreateDiaryTest() {
 		//given
-		TempUser tempUser = new TempUser("Test", "testName");
-		tempUserRepository.saveAndFlush(tempUser); // 테스트를 위해 저장 후 플러시 작업을 수행
-
 		String title = "Diary Test";
 		String content = "This is diary Test";
 
 		Optional<TempUser> findUser = tempUserService.findByUsername("testName");
 
 		//when
-		if(!findUser.isPresent()) {
+		if (!findUser.isPresent()) {
 			throw new RuntimeException("사용자를 찾을 수 없습니다.");
 		}
-		AddDiaryRequestDto diaryResponseDto = AddDiaryRequestDto.builder().userId(findUser.get().getUserId()).title(title).content(content).targetDate(
-			LocalDate.of(2025, 3, 30)).build();
+		AddDiaryRequestDto diaryResponseDto = AddDiaryRequestDto.builder()
+			.userId(findUser.get().getUserId())
+			.title(title)
+			.content(content)
+			.targetDate(
+				LocalDate.of(2025, 3, 30))
+			.build();
 		DiaryResponseDto savedDiary = diaryService.save(diaryResponseDto);
 
 		//then
 		Assertions.assertThat(savedDiary.getTitle()).isEqualTo(title);
 		Assertions.assertThat(savedDiary.getContent()).isEqualTo(content);
+	}
+
+	@Test
+	@Transactional
+	public void RemoveDiaryTest(){
+		//given
+		TempUser findUser = tempUserService.findByUsername("testName")
+			.orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+		String title = "Diary Test";
+		String content = "This is diary Test";
+		AddDiaryRequestDto diaryResponseDto = AddDiaryRequestDto.builder()
+			.userId(findUser.getUserId())
+			.title(title)
+			.content(content)
+			.targetDate(
+				LocalDate.of(2025, 3, 30))
+			.build();
+		DiaryResponseDto savedDiary = diaryService.save(diaryResponseDto);
+
+		//when
+		diaryService.deleteDiaryById(findUser.getUserId(), savedDiary.getId());
+
+		List<DiaryResponseDto> userDiarys = diaryService.getDiariesByUserId(findUser.getUserId());
+		DiaryResponseDto deletedDiary = null;
+		for (DiaryResponseDto userDiary : userDiarys) {
+			if (userDiary.getId().equals(savedDiary.getId())) {
+				deletedDiary = userDiary;
+			}
+		}
+
+		//then
+		Assertions.assertThat(deletedDiary).isNull();
 	}
 
 }
