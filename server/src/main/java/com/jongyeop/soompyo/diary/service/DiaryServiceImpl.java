@@ -11,7 +11,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.jongyeop.soompyo.diary.dto.AddDiaryRequestDto;
 import com.jongyeop.soompyo.diary.dto.DiaryResponseDto;
+import com.jongyeop.soompyo.diary.dto.ModifyDiaryRequestDto;
 import com.jongyeop.soompyo.diary.model.Diary;
+import com.jongyeop.soompyo.diary.model.vo.DiaryUpdateVO;
 import com.jongyeop.soompyo.diary.repository.DiaryRepository;
 import com.jongyeop.soompyo.user.model.TempUser;
 import com.jongyeop.soompyo.user.repository.UserRepository;
@@ -60,5 +62,16 @@ public class DiaryServiceImpl implements DiaryService {
 			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "일기를 찾을 수 없습니다."));
 		findDiary.softDelete();
 		return ResponseEntity.noContent().build();
+	}
+
+	@Override
+	@Transactional
+	public DiaryResponseDto modify(String userId, Long diaryId, ModifyDiaryRequestDto dto) {
+		Diary findDiary = diaryRepository.findByIdAndOwnerUserId(diaryId, userId).orElseThrow(() ->
+			new ResponseStatusException(HttpStatus.NOT_FOUND, "일기를 찾을 수 없습니다.")
+		);
+		DiaryUpdateVO updateVO = new DiaryUpdateVO(dto.getTitle(), dto.getContent(), dto.getTargetDate());
+		findDiary.updateDiary(updateVO);
+		return DiaryResponseDto.toDto(findDiary);
 	}
 }

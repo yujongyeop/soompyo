@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import com.jongyeop.soompyo.diary.model.Diary;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DiaryResponseDto {
 	private Long id;
 	private String owner;

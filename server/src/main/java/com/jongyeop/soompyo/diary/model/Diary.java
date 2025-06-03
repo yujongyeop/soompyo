@@ -3,6 +3,7 @@ package com.jongyeop.soompyo.diary.model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import com.jongyeop.soompyo.diary.model.vo.DiaryUpdateVO;
 import com.jongyeop.soompyo.user.model.TempUser;
 
 import jakarta.persistence.Column;
@@ -51,6 +52,13 @@ public class Diary {
 
 	public void softDelete() {
 		this.isDeleted = true;
+		this.modifiedDate = LocalDateTime.now();
+	}
+
+	public void updateDiary(DiaryUpdateVO vo){
+		this.title = vo.title();
+		this.content = vo.content();
+		this.targetDate = vo.targetDate();
 		this.modifiedDate = LocalDateTime.now();
 	}
 
