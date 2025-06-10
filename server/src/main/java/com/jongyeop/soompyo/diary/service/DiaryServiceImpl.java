@@ -38,6 +38,13 @@ public class DiaryServiceImpl implements DiaryService {
 	}
 
 	@Override
+	public DiaryResponseDto getDiaryByUserId(String userId, String diaryId) {
+		Diary diary = diaryRepository.findByIdAndOwnerUserId(Long.parseLong(diaryId), userId)
+			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자의 일기를 찾을 수 없습니다."));
+		return DiaryResponseDto.toDto(diary);
+	}
+
+	@Override
 	@Transactional
 	public DiaryResponseDto save(AddDiaryRequestDto diaryDto) {
 		Optional<TempUser> findUser = userRepository.findByUserId(diaryDto.getUserId());
