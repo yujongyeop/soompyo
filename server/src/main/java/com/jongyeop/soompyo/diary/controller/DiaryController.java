@@ -31,6 +31,11 @@ public class DiaryController {
 		return diaryService.getDiariesByUserId(userId);
 	}
 
+	@GetMapping("/{diaryId}")
+	public DiaryResponseDto getSingleDiary(@PathVariable String userId, @PathVariable String diaryId) {
+		return diaryService.getDiaryByUserId(userId, diaryId);
+	}
+
 	@PostMapping
 	public DiaryResponseDto saveDiary(@RequestBody AddDiaryRequestDto diaryDto) {
 		return diaryService.save(diaryDto);

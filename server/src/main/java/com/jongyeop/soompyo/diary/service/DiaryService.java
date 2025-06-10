@@ -16,4 +16,6 @@ public interface DiaryService {
 	List<DiaryResponseDto> getDiariesByUserId(String userId);
 
 	ResponseEntity<Void> deleteDiaryById(String userId, Long diaryId);
+
+	DiaryResponseDto getDiaryByUserId(String userId, String diaryId);
 }
