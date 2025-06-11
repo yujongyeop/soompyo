@@ -39,15 +39,13 @@ jobs:
         build-scan-terms-of-use-agree: "yes"
       
     - name: Grant Execution Permission to gradlew
-      working-directory: ./server
       run: chmod +x ./gradlew
       
     - name: Build with Gradle Wrapper
-      working-directory: ./server
       run: ./gradlew build --scan
 
     - name: Regist Test result to PR
       uses: mikepenz/action-junit-report@v3
       if: always()
       with:
-        report_paths: 'server/build/test-results/test/TEST-*.xml'
+        report_paths: 'build/test-results/test/TEST-*.xml'
